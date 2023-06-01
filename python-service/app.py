@@ -10,6 +10,7 @@ logging.basicConfig(level=logging.INFO)
 
 app = flask.Flask(__name__)
 CORS(app)
+connection string = "Server=tcp:proddb.database.windows.net,1433;Initial Catalog=proddb;Persist Security Info=False;User ID=CloudSA7275e68b;Password=abcdefg12345;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
 
 @app.route('/order', methods=['GET'])
 def getOrder():
@@ -37,6 +38,7 @@ def getOrder():
         finally:
             app.logger.info('completed order call')
 
+# Creating an order
 @app.route('/order', methods=['POST'])
 def createOrder():
     app.logger.info('create order called')
@@ -60,7 +62,8 @@ def createOrder():
             return str(e)
         finally:
             app.logger.info('created order')
-
+        
+# Deleting an order
 @app.route('/order', methods=['DELETE'])
 def deleteOrder():
     app.logger.info('delete called in the order service')
@@ -81,5 +84,7 @@ def deleteOrder():
             resp = jsonify('Order "id" not found in query string')
             resp.status_code = 400
             return resp
+
+
 
 app.run(host='0.0.0.0', port=os.getenv('PORT', '5000'))
